@@ -3,6 +3,7 @@ package com.bills.dr_stone.repositories.impl
 import com.bills.dr_stone.entities.Bill
 import com.bills.dr_stone.entities.Bills
 import com.bills.dr_stone.repositories.BillsRepositories
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
@@ -24,6 +25,15 @@ class BillsRepositoriesImpl : BillsRepositories {
         }
 
         return returnBills.toList()
+    }
+
+
+    override fun createBill(bill: Bill) {
+        transaction {
+            Bills.insert {
+               bill.name
+            }
+        }
     }
 
 }
