@@ -8,4 +8,5 @@ interface BillsUseCase {
     fun createBill(bill: Bill): BillResponse?
     fun deleteBill(billID: Int)
     fun getBill(billID: Int): BillResponse?
+    fun updateBill(bill: Bill): BillResponse?
 }

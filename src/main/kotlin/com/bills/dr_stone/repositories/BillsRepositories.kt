@@ -8,4 +8,5 @@ interface BillsRepositories {
     fun createBill(bill: Bill)
     fun deleteBill(billID: Int)
     fun getBill(billID: Int): BillResponse
+    fun updateBill(bill: Bill): BillResponse?
 }

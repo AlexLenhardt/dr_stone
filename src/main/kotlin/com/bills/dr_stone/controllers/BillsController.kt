@@ -19,6 +19,11 @@ class BillsController(
     fun createBill(@RequestBody bill: Bill): BillResponse? {
         return usecase.createBill(bill)
     }
+
+    @PutMapping
+    fun updateBill(@RequestBody bill: Bill): BillResponse? {
+        return usecase.updateBill(bill)
+    }
 }
 
 @RestController
@@ -36,5 +41,4 @@ class BillsParam(
     fun getBill(@PathVariable billID: Int): BillResponse? {
         return usecase.getBill(billID)
     }
-
 }
