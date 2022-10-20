@@ -1,10 +1,11 @@
 package com.bills.dr_stone.repositories.impl
 
 import com.bills.dr_stone.entities.Bill
+import com.bills.dr_stone.entities.BillResponse
 import com.bills.dr_stone.entities.Bills
+import com.bills.dr_stone.entities.DATABASE_ERROR
 import com.bills.dr_stone.repositories.BillsRepositories
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
 
@@ -31,15 +32,39 @@ class BillsRepositoriesImpl : BillsRepositories {
     override fun createBill(bill: Bill) {
         transaction {
             Bills.insert {
-               it[name] = bill.name
+                it[name] = bill.name
             }
         }
     }
 
     override fun deleteBill(billID: Int) {
         transaction {
-            exec("DELETE FROM bills WHERE id = $billID")
+            Bills.deleteWhere {
+                Op.build {
+                    id.eq(billID)
+                }
+            }
         }
+    }
+
+    override fun getBill(billID: Int): BillResponse {
+        var bill = BillResponse()
+        try {
+            transaction {
+                Bills.select {
+                    Bills.id.eq(billID)
+                }.forEach {
+                    bill.bill = Bill(
+                        id = it[Bills.id],
+                        name = it[Bills.name]
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            BillResponse(error = DATABASE_ERROR)
+        }
+
+        return bill
     }
 
 }

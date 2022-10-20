@@ -1,7 +1,7 @@
 package com.bills.dr_stone.usecases.impl
 
 import com.bills.dr_stone.entities.Bill
-import com.bills.dr_stone.entities.CreateBillResponse
+import com.bills.dr_stone.entities.BillResponse
 import com.bills.dr_stone.entities.DATABASE_ERROR
 import com.bills.dr_stone.entities.ERROR_NAME_EMPTY
 import com.bills.dr_stone.repositories.BillsRepositories
@@ -18,15 +18,15 @@ class BillsUseCaseImpl(
     }
 
 
-    override fun createBill(bill: Bill): CreateBillResponse? {
+    override fun createBill(bill: Bill): BillResponse? {
         if (bill.name.trim() == "") {
-            return CreateBillResponse(error = ERROR_NAME_EMPTY)
+            return BillResponse(error = ERROR_NAME_EMPTY)
         }
 
         try {
             repo.createBill(bill)
         }catch (e: Exception){
-            return CreateBillResponse(error = DATABASE_ERROR)
+            return BillResponse(error = DATABASE_ERROR)
         }
 
         return null
@@ -34,5 +34,9 @@ class BillsUseCaseImpl(
 
     override fun deleteBill(billID: Int) {
         repo.deleteBill(billID)
+    }
+
+    override fun getBill(billID: Int): BillResponse {
+        return repo.getBill(billID)
     }
 }

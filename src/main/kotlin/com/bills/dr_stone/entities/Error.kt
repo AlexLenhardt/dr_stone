@@ -1,6 +1,6 @@
 package com.bills.dr_stone.entities
 
-class GenericError(
+abstract class GenericError(
     /**
      * O nome do módulo que definiu a especificação real desse erro.
      */
@@ -15,18 +15,4 @@ class GenericError(
      * A descrição desse erro.
      */
     val description: String,
-){
-
-}
-
-val ERROR_NAME_EMPTY: GenericError = GenericError(
-    moduleName = "Bill",
-    code = "EMPTY_NAME",
-    description = "Name cannot be empty"
-)
-
-val DATABASE_ERROR: GenericError = GenericError(
-    moduleName = "DATABASE",
-    code = "DATABASE_ERROR",
-    description = "An error occurs on database"
 )

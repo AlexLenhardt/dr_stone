@@ -15,6 +15,25 @@ data class Bill(
     val name: String
 )
 
-data class CreateBillResponse(
+data class BillResponse(
+    var bill: Bill? = null,
     val error: GenericError? = null
 )
+
+val ERROR_NAME_EMPTY = BillsResponse(
+    moduleName = "BILL",
+    code = "EMPTY_NAME",
+    description = "Name cannot be empty"
+)
+
+val DATABASE_ERROR: GenericError = BillsResponse(
+    moduleName = "DATABASE",
+    code = "DATABASE_ERROR",
+    description = "An error occurs on database"
+)
+
+class BillsResponse(
+    moduleName: String,
+    code: String,
+    description: String
+): GenericError(moduleName, code, description)
