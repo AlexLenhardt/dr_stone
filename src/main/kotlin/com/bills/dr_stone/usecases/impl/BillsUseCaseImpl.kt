@@ -19,7 +19,7 @@ class BillsUseCaseImpl(
 
 
     override fun createBill(bill: Bill): BillResponse? {
-        if (bill.name.trim() == "") {
+        if (bill.title.trim() == "") {
             return BillResponse(error = ERROR_NAME_EMPTY)
         }
 

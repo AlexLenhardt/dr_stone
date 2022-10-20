@@ -19,7 +19,7 @@ class BillsRepositoriesImpl : BillsRepositories {
             Bills.selectAll().forEach {
                 bill = Bill(
                     id = it[Bills.id],
-                    name = it[Bills.name],
+                    title = it[Bills.title],
                 )
                 returnBills.add(bill)
             }
@@ -32,7 +32,7 @@ class BillsRepositoriesImpl : BillsRepositories {
     override fun createBill(bill: Bill) {
         transaction {
             Bills.insert {
-                it[name] = bill.name
+                it[title] = bill.title
             }
         }
     }
@@ -56,7 +56,7 @@ class BillsRepositoriesImpl : BillsRepositories {
                 }.forEach {
                     bill.bill = Bill(
                         id = it[Bills.id],
-                        name = it[Bills.name]
+                        title = it[Bills.title]
                     )
                 }
             }

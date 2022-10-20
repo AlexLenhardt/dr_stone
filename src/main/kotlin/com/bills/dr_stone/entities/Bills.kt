@@ -1,18 +1,25 @@
 package com.bills.dr_stone.entities
 
+import org.h2.util.DateTimeUtils
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.javatime.datetime
 
 object Bills : Table("bills") {
     var id = integer("id").autoIncrement()
-    val name = varchar("name", length = 200)
-
+    var title = varchar("title", length = 200)
+    var value = long("value")
+    var dueDate = datetime("due_date")
+    var isRecurrent = bool("is_recurrent")
 
     override val primaryKey = PrimaryKey(id)
 }
 
 data class Bill(
     var id: Int,
-    val name: String
+    var title: String,
+    var value: Long,
+    var dueDate: DateTimeUtils,
+    var isRecurrent: Boolean
 )
 
 data class BillResponse(
