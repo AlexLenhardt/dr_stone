@@ -31,4 +31,8 @@ class BillsUseCaseImpl(
 
         return null
     }
+
+    override fun deleteBill(billID: Int) {
+        repo.deleteBill(billID)
+    }
 }

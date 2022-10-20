@@ -31,8 +31,14 @@ class BillsRepositoriesImpl : BillsRepositories {
     override fun createBill(bill: Bill) {
         transaction {
             Bills.insert {
-               bill.name
+               it[name] = bill.name
             }
+        }
+    }
+
+    override fun deleteBill(billID: Int) {
+        transaction {
+            exec("DELETE FROM bills WHERE id = $billID")
         }
     }
 
