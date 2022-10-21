@@ -2,13 +2,13 @@ package com.bills.dr_stone.repositories.impl
 
 import com.bills.dr_stone.entities.Bill
 import com.bills.dr_stone.entities.BillResponse
-import com.bills.dr_stone.entities.Bills
 import com.bills.dr_stone.entities.DATABASE_ERROR
 import com.bills.dr_stone.repositories.BillsRepositories
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
+import com.bills.dr_stone.entities.BillsTable as BillsDB
 
 @Repository
 class BillsRepositoriesImpl : BillsRepositories {
@@ -17,18 +17,18 @@ class BillsRepositoriesImpl : BillsRepositories {
         var bill: Bill
 
         transaction {
-            Bills.select {
+            BillsDB.select {
                 Op.build {
-                    Bills.dueDate greaterEq LocalDate.now()
+                    BillsDB.dueDate greaterEq LocalDate.now()
                 }
-            }.orderBy(Bills.dueDate, SortOrder.ASC).forEach {
+            }.orderBy(BillsDB.dueDate, SortOrder.ASC).forEach {
                 bill = Bill(
-                    id = it[Bills.id],
-                    title = it[Bills.title],
-                    code = it[Bills.code],
-                    dueDate = it[Bills.dueDate],
-                    isRecurrent = it[Bills.isRecurrent],
-                    value = it[Bills.value],
+                    id = it[BillsDB.id],
+                    title = it[BillsDB.title],
+                    code = it[BillsDB.code],
+                    dueDate = it[BillsDB.dueDate],
+                    isRecurrent = it[BillsDB.isRecurrent],
+                    value = it[BillsDB.value],
                 )
                 returnBills.add(bill)
             }
@@ -39,7 +39,7 @@ class BillsRepositoriesImpl : BillsRepositories {
 
     override fun createBill(bill: Bill) {
         transaction {
-            Bills.insert {
+            BillsDB.insert {
                 it[title] = bill.title
                 it[code] = bill.code
                 it[dueDate] = bill.dueDate
@@ -51,7 +51,7 @@ class BillsRepositoriesImpl : BillsRepositories {
 
     override fun deleteBill(billID: Int) {
         transaction {
-            Bills.deleteWhere {
+            BillsDB.deleteWhere {
                 Op.build {
                     id.eq(billID)
                 }
@@ -63,16 +63,16 @@ class BillsRepositoriesImpl : BillsRepositories {
         val bill = BillResponse()
         try {
             transaction {
-                Bills.select {
-                    Bills.id.eq(billID)
+                BillsDB.select {
+                    BillsDB.id.eq(billID)
                 }.forEach {
                     bill.bill = Bill(
-                        id = it[Bills.id],
-                        title = it[Bills.title],
-                        code = it[Bills.code],
-                        dueDate = it[Bills.dueDate],
-                        isRecurrent = it[Bills.isRecurrent],
-                        value = it[Bills.value]
+                        id = it[BillsDB.id],
+                        title = it[BillsDB.title],
+                        code = it[BillsDB.code],
+                        dueDate = it[BillsDB.dueDate],
+                        isRecurrent = it[BillsDB.isRecurrent],
+                        value = it[BillsDB.value]
                     )
                 }
             }
@@ -85,8 +85,8 @@ class BillsRepositoriesImpl : BillsRepositories {
 
     override fun updateBill(bill: Bill): BillResponse? {
         transaction {
-            Bills.update({
-                Bills.id eq bill.id
+            BillsDB.update({
+                BillsDB.id eq bill.id
             }) {
                 it[title] = bill.title
                 it[value] = bill.value

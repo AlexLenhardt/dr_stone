@@ -7,12 +7,11 @@ import org.jetbrains.exposed.sql.javatime.datetime
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-object BillsTable : Table("bills") {
+object IncomeTable : Table() {
     var id = integer("id").autoIncrement()
-    var code = varchar("code", length = 200)
     var title = varchar("title", length = 200)
     var value = double("value")
-    var dueDate = date("due_date")
+    var receiptDate = date("receiptDate")
     var isRecurrent = bool("is_recurrent")
     var statusCode = integer("status_code").default(0)
     var createdAt = datetime("created_at").default(LocalDateTime.now())
@@ -21,50 +20,24 @@ object BillsTable : Table("bills") {
     override val primaryKey = PrimaryKey(id)
 }
 
-data class Bill(
+data class Income(
     var id: Int,
-    var code: String,
     var title: String,
     var value: Double,
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    var dueDate: LocalDate,
+    var receiptDate: LocalDate,
 
     var isRecurrent: Boolean,
-
-    var isOverdue: Boolean = false
 )
 
-data class BillResponse(
-    var bill: Bill? = null,
+class IncomeResponse(
+    var income: Income? = null,
     val error: GenericError? = null
 )
 
-class BillsResponse(
+class ErrorIncome(
     moduleName: String,
     code: String,
     description: String
 ): GenericError(moduleName, code, description)
-
-val ERROR_NAME_EMPTY = BillsResponse(
-    moduleName = "BILL",
-    code = "EMPTY_NAME",
-    description = "Name cannot be empty"
-)
-
-val DATABASE_ERROR = BillsResponse(
-    moduleName = "DATABASE",
-    code = "DATABASE_ERROR",
-    description = "An error occurs on database"
-)
-
-val ERROR_VALUE_ZEROS = BillsResponse(
-    moduleName = "BILL",
-    code = "EMPTY_VALUE",
-    description = "Value cannot be zeros"
-)
-val ERROR_INCORRECT_DATE = BillsResponse(
-    moduleName = "BILL",
-    code = "INCORRECT_DATE",
-    description = "Incorrect date"
-)

@@ -1,6 +1,7 @@
 package com.bills.dr_stone
 
-import com.bills.dr_stone.entities.Bills
+import com.bills.dr_stone.entities.BillsTable
+import com.bills.dr_stone.entities.IncomeTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -11,10 +12,10 @@ import org.springframework.boot.runApplication
 class DrStoneApplication
 
 fun main(args: Array<String>) {
-    val conn = DB
-    val database = conn.connect()
+    val database = DB.connect()
     transaction(database) {
-        SchemaUtils.create(Bills)
+        SchemaUtils.create(BillsTable)
+        SchemaUtils.create(IncomeTable)
     }
     runApplication<DrStoneApplication>(*args)
 }
